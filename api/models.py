@@ -10,7 +10,7 @@ class CommandQueue(models.Model):
     COMMAND_TYPES = [
         ('DISPENSE', 'Dispense Medicine'),
         ('REFILL', 'Refill Medicine'),
-        ('TEST_MOTOR', 'Test Motor'),
+        ('CALIBRATE', 'Calibrate Motor'),
         ('TEST_IR', 'Test IR Sensor'),
     ]
     command_type = models.CharField(max_length=50, choices=COMMAND_TYPES)

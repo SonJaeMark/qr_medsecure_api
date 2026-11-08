@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='CommandQueue',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('command_type', models.CharField(choices=[('DISPENSE', 'Dispense Medicine'), ('REFILL', 'Refill Medicine'), ('TEST_MOTOR', 'Test Motor'), ('TEST_IR', 'Test IR Sensor')], max_length=50)),
+                ('command_type', models.CharField(choices=[('DISPENSE', 'Dispense Medicine'), ('REFILL', 'Refill Medicine'), ('CALIBRATE', 'Calibrate Motor'), ('TEST_IR', 'Test IR Sensor')], max_length=50)),
                 ('motor_channel', models.IntegerField(blank=True, null=True)),
                 ('parameters', models.TextField(blank=True, null=True)),
                 ('status', models.CharField(default='PENDING', max_length=20)),
