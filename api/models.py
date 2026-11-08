@@ -13,6 +13,7 @@ class CommandQueue(models.Model):
         ('CALIBRATE', 'Calibrate Motor'),
         ('TEST_IR', 'Test IR Sensor'),
     ]
+    machine_id = models.CharField(max_length=20)
     command_type = models.CharField(max_length=50, choices=COMMAND_TYPES)
     motor_channel = models.IntegerField(blank=True, null=True)
     parameters = models.TextField(blank=True, null=True)  # Stores JSON string (e.g., steps, direction)

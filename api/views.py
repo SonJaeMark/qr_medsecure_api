@@ -45,7 +45,14 @@ def send_command(request):
 @api_view(['GET'])
 @require_api_key
 def iot_poll_instructions(request):
-    cmd = CommandQueue.objects.filter(status='PENDING').first()
+    machine_id = request.query_params.get('machine_id')
+    if not machine_id:
+        return Response(
+            {"error": "The machine_id query parameter is required."},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    cmd = CommandQueue.objects.filter(status='PENDING', machine_id=machine_id).first()
     if not cmd:
         return Response({"status": "no_instruction"})
     

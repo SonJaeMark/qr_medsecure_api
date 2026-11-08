@@ -106,6 +106,7 @@ curl -X POST \
   -H "Content-Type: application/json" \
   -H "X-API-Key: qr-medsecure-super-secret-key-123" \
   -d '{
+    "machine_id": "MSv1M-001",
     "command_type": "DISPENSE",
     "motor_channel": 2,
     "parameters": "{\"steps\": 120, \"direction\": \"forward\"}"
@@ -116,6 +117,7 @@ Request body example:
 
 ```json
 {
+  "machine_id": "MSv1M-001",
   "command_type": "DISPENSE",
   "motor_channel": 2,
   "parameters": "{\"steps\": 120, \"direction\": \"forward\"}"
@@ -137,6 +139,7 @@ Example success response:
   "message": "Command queued for IoT machine",
   "data": {
     "id": 4,
+    "machine_id": "MSv1M-001",
     "command_type": "DISPENSE",
     "motor_channel": 2,
     "parameters": "{\"steps\": 120, \"direction\": \"forward\"}",
@@ -150,7 +153,7 @@ Example validation error response:
 
 ```json
 {
-  "command_type": [
+  "machine_id": [
     "This field is required."
   ]
 }
@@ -158,11 +161,12 @@ Example validation error response:
 
 ### 4) Poll pending machine instruction
 
-```http
-GET /api/v1/iot/poll/
-```
+The IoT device must identify itself using its `machine_id`. The API returns only a pending command assigned to that machine.
 
-Used by the IoT device to retrieve the next pending instruction.
+```http
+GET /api/v1/iot/poll/?machine_id=MSv1M-001
+X-API-Key: qr-medsecure-super-secret-key-123
+```
 
 Example response when a command is pending:
 
@@ -171,6 +175,7 @@ Example response when a command is pending:
   "status": "success",
   "command": {
     "id": 4,
+    "machine_id": "MSv1M-001",
     "command_type": "DISPENSE",
     "motor_channel": 2,
     "parameters": "{\"steps\": 120, \"direction\": \"forward\"}",
@@ -180,11 +185,19 @@ Example response when a command is pending:
 }
 ```
 
-If no command is available:
+If no command is queued for that machine:
 
 ```json
 {
   "status": "no_instruction"
+}
+```
+
+If `machine_id` is omitted, the API responds with `400 Bad Request`:
+
+```json
+{
+  "error": "The machine_id query parameter is required."
 }
 ```
 
